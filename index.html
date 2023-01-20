@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/core.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <ul>
+                <li id="productsLink" class="active">Products</li>
+                <li id="addLink">Add product</li>
+                <input type="text" name='search' placeholder="search">
+            </ul>
+        </div>
+        <div id="section">
+            <div class="side-nav">
+                <ul>
+                    <li data-name="All" class="active">All products</li>
+                    <li data-name="Milk">Milk</li>
+                    <li data-name="Chocolate">Chocolate</li>
+                    <li data-name="Wine">Wine</li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <h2>Milk</h2>
+                    <h3>milk</h3>
+                    <h3>Tnuva</h3>
+                    <h4>Fat: 3.5%</h4>
+                    <h4>Price: 15 NIS</h4>
+                </div>
+            </div>
+            <form class="hide" action="#">
+                <input class="form-control" type="text" name="title"
+                       placeholder="Type product title">
+                <input class="form-control" type="text" name="manufc"
+                       placeholder="Type manufacture">
+                <input class="form-control" type="number" name="price" min="1" step="1"
+                       placeholder="Type price">
+                <select class="form-control" name="type" id="type">
+                  <option value="milk">Milk</option>
+                  <option value="chocolate">Chocolate</option>
+                  <option value="wine">Wine</option>
+                </select>
+                <div>
+                  <input class="form-control" type="number" name="extra" id="extra" min="0.5" step="0.5"
+                         placeholder="Type fat">
+                </div>
+                <button>add</button><br>
+                <div class="random-values" id="random-values">Random values</div><br>
+                <div id="notifications"></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
