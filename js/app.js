@@ -13,13 +13,13 @@
         sideNavDiv: document.querySelector('#section .side-nav'),
     };
 
-    const render = (type = 'All') => {
+    const render = () => {
         let products;
+        let type;
         document.querySelectorAll('.side-nav li').forEach(li => {
             if (li.classList.contains('active')) {
                 type = li.dataset.name;
             }
-
         });
 
         if (type === 'All') {
@@ -52,12 +52,13 @@
         nodes.contentDiv.innerHTML = cards;
     }
 
-    const showNotification = () => {
-        nodes.notifications.innerHTML = `<div class="alert-success">The product has been added successfully</div>`;
-    }
-
     const clearNotifications = () => {
         nodes.notifications.innerHTML = '';
+    }
+
+    const showNotification = () => {
+        nodes.notifications.innerHTML = `<div class="alert-success">The product has been added successfully</div>`;
+        setTimeout(clearNotifications, 3000);
     }
 
     const showErrors = errCodes => {

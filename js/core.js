@@ -11,7 +11,6 @@ class Product {
         this.#price = price;
     }
 
-
     get title() {
         return this.#title;
     }
