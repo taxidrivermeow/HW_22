@@ -1,32 +1,28 @@
-(() => {
+$(function () {
     const store = new Store();
     const nodes = {
-        navDiv: document.querySelector('.nav'),
-        productsLinkLi: document.getElementById('productsLink'),
-        addLinkLi: document.getElementById('addLink'),
-        addForm: document.querySelector('#section form'),
-        contentDiv: document.querySelector('#section .content'),
-        typeSelect: document.getElementById('type'),
-        extraInput: document.getElementById('extra'),
-        randomValues: document.getElementById('random-values'),
-        notifications: document.getElementById('notifications'),
-        sideNavDiv: document.querySelector('#section .side-nav'),
+        navDiv: $('.nav'),
+        productsLinkLi: $('#productsLink'),
+        addLinkLi: $('#addLink'),
+        addForm: $('#section form'),
+        contentDiv: $('#section .content'),
+        typeSelect: $('#type'),
+        extraInput: $('#extra'),
+        randomValues: $('#random-values'),
+        notifications: $('#notifications'),
+        sideNavDiv: $('#section .side-nav'),
     };
 
     const render = () => {
         let products;
         let type;
-        document.querySelectorAll('.side-nav li').forEach(li => {
+        $('.side-nav li').each((index, li) => {
             if (li.classList.contains('active')) {
                 type = li.dataset.name;
             }
         });
 
-        if (type === 'All') {
-            products = store.getAll();
-        } else {
-            products = store.getByType(type);
-        }
+        products = (type === 'All') ? store.getAll() : store.getByType(type);
 
         const cards = products.map(product => {
             let extraField = '';
@@ -49,15 +45,15 @@
             `;
         }).join('');
 
-        nodes.contentDiv.innerHTML = cards;
+        nodes.contentDiv.html(cards);
     }
 
     const clearNotifications = () => {
-        nodes.notifications.innerHTML = '';
+        nodes.notifications.html('');
     }
 
     const showNotification = () => {
-        nodes.notifications.innerHTML = `<div class="alert-success">The product has been added successfully</div>`;
+        nodes.notifications.html(`<div class="alert-success">The product has been added successfully</div>`);
         setTimeout(clearNotifications, 3000);
     }
 
@@ -73,7 +69,7 @@
             return `<div class="alert-danger">${errors[errCode]}</div>`;
         }).join('');
         clearNotifications();
-        nodes.notifications.innerHTML = errorsHTML;
+        nodes.notifications.html(errorsHTML);
     }
 
     const checkCorrectValues = (title, manufc, price, type, extra) => {
@@ -109,18 +105,13 @@
             res = false;
             errCodes.push('extra');
         }
-
         clearNotifications();
-        if (res) {
-            showNotification();
-        } else {
-            showErrors(errCodes);
-        }
+        (res)?showNotification():showErrors(errCodes);
 
         return res;
     }
 
-    nodes.addForm.addEventListener('submit', e => {
+    nodes.addForm.on('submit', e => {
         e.preventDefault();
         const title = e.target.title.value.trim();
         const manufc = e.target.manufc.value.trim();
@@ -143,49 +134,41 @@
                     break;
                 }
             }
-            nodes.addForm.reset();
+            nodes.addForm.trigger('reset');
             render();
         }
     });
 
-    nodes.typeSelect.addEventListener('change', e => {
+    nodes.typeSelect.on('change', e => {
         switch (e.target.value) {
             case 'milk': {
-                nodes.extraInput.setAttribute('type', 'number');
-                nodes.extraInput.setAttribute('placeholder', 'Type fat');
+                nodes.extraInput.attr('type', 'number');
+                nodes.extraInput.attr('placeholder', 'Type fat');
                 break;
             }
             case 'chocolate': {
-                nodes.extraInput.setAttribute('type', 'text');
-                nodes.extraInput.setAttribute('placeholder', 'Type kind');
+                nodes.extraInput.attr('type', 'text');
+                nodes.extraInput.attr('placeholder', 'Type kind');
                 break;
             }
             case 'wine': {
-                nodes.extraInput.setAttribute('type', 'number');
-                nodes.extraInput.setAttribute('placeholder', 'Type alcohol');
+                nodes.extraInput.attr('type', 'number');
+                nodes.extraInput.attr('placeholder', 'Type alcohol');
                 break;
             }
         }
     });
 
-    nodes.navDiv.addEventListener('click', e => {
+    nodes.navDiv.on('click', e => {
         const navID = e.target.getAttribute('id');
-        if (navID === 'productsLink') {
-            nodes.productsLinkLi.classList.add('active');
-            nodes.addLinkLi.classList.remove('active');
-            nodes.addForm.classList.add('hide');
-            nodes.contentDiv.classList.remove('hide');
-            nodes.sideNavDiv.classList.remove('hide');
-        } else if (navID === 'addLink') {
-            nodes.productsLinkLi.classList.remove('active');
-            nodes.addLinkLi.classList.add('active');
-            nodes.addForm.classList.remove('hide');
-            nodes.contentDiv.classList.add('hide');
-            nodes.sideNavDiv.classList.add('hide');
-        }
+        nodes.productsLinkLi.toggleClass('active');
+        nodes.addLinkLi.toggleClass('active');
+        nodes.addForm.toggleClass('hide');
+        nodes.contentDiv.toggleClass('hide');
+        nodes.sideNavDiv.toggleClass('hide');
     });
 
-    nodes.sideNavDiv.addEventListener('click', e => {
+    nodes.sideNavDiv.on('click', e => {
         if (e.target.dataset.name) {
             document.querySelectorAll('.side-nav li').forEach(li => {
                 li.classList.remove('active');
@@ -195,7 +178,7 @@
         }
     });
 
-    nodes.randomValues.addEventListener('click', () => {
+    nodes.randomValues.on('click', () => {
         const randomizer = (min, max, symbolsAfterComma = 0) => Math.floor(Math.random() * (max - min) + min);
         const types = [
             {
@@ -223,22 +206,22 @@
 
         const index = randomizer(0, types.length);
         if (types[index].type === 'chocolate') {
-            nodes.extraInput.setAttribute('type', 'text');
-            nodes.extraInput.setAttribute('placeholder', 'Type kind');
+            nodes.extraInput.attr('type', 'text');
+            nodes.extraInput.attr('placeholder', 'Type kind');
         } else if (types[index].type === 'milk') {
-            nodes.extraInput.setAttribute('type', 'number');
-            nodes.extraInput.setAttribute('placeholder', 'Type fat');
+            nodes.extraInput.attr('type', 'number');
+            nodes.extraInput.attr('placeholder', 'Type fat');
         } else if (types[index].type === 'wine') {
-            nodes.extraInput.setAttribute('type', 'number');
-            nodes.extraInput.setAttribute('placeholder', 'Type alcohol');
+            nodes.extraInput.attr('type', 'number');
+            nodes.extraInput.attr('placeholder', 'Type alcohol');
         }
 
-        nodes.addForm.type.value = types[index].type;
-        nodes.addForm.title.value = types[index].title[randomizer(0, types[index].title.length)];
-        nodes.addForm.manufc.value = types[index].manufacture[randomizer(0, types[index].manufacture.length)];
-        nodes.addForm.price.value = types[index].price;
-        nodes.addForm.extra.value = types[index].extra[randomizer(0, types[index].extra.length)];
+        nodes.addForm[0].type.value = types[index].type;
+        nodes.addForm[0].title.value = types[index].title[randomizer(0, types[index].title.length)];
+        nodes.addForm[0].manufc.value = types[index].manufacture[randomizer(0, types[index].manufacture.length)];
+        nodes.addForm[0].price.value = types[index].price;
+        nodes.addForm[0].extra.value = types[index].extra[randomizer(0, types[index].extra.length)];
     });
 
     render();
-})()
+});
